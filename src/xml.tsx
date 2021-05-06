@@ -131,11 +131,15 @@ export function SvgUri(props: UriProps) {
   const { onError = err, uri } = props;
   const [xml, setXml] = useState<string | null>(null);
   useEffect(() => {
+    let isCancelled = false;
     uri
       ? fetchText(uri)
-          .then(setXml)
+          .then(data => {
+            !isCancelled && setXml(data);
+          })
           .catch(onError)
       : setXml(null);
+     return () => { isCancelled = true }
   }, [onError, uri]);
   return <SvgXml xml={xml} override={props} />;
 }
