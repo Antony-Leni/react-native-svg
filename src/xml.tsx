@@ -122,8 +122,8 @@ export function SvgXml(props: XmlProps) {
   }
 }
 
-export async function fetchTextWithHeaders(uri: string, headers: object) {
-  const response = await fetch(uri, {headers: headers});
+export async function fetchTextWithHeaders(uri: string, headers: any) {
+  const response = await fetch(uri, {headers});
   return await response.text();
 }
 
