@@ -86,7 +86,7 @@ export type AdditionalProps = {
   override?: Object;
 };
 
-export type UriProps = { uri: string | null } & AdditionalProps;
+export type UriProps = { uri: string | null, headers: object } & AdditionalProps;
 export type UriState = { xml: string | null };
 
 export type XmlProps = { xml: string | null } & AdditionalProps;
@@ -122,18 +122,23 @@ export function SvgXml(props: XmlProps) {
   }
 }
 
+export async function fetchTextWithHeaders(uri: string, headers: object) {
+  const response = await fetch(uri, headers);
+  return await response.text();
+}
+
 export async function fetchText(uri: string) {
   const response = await fetch(uri);
   return await response.text();
 }
 
 export function SvgUri(props: UriProps) {
-  const { onError = err, uri } = props;
+  const { onError = err, uri, headers } = props;
   const [xml, setXml] = useState<string | null>(null);
   useEffect(() => {
     let isCancelled = false;
     uri
-      ? fetchText(uri)
+      ? fetchTextWithHeaders(uri, headers)
           .then(data => {
             !isCancelled && setXml(data);
           })
