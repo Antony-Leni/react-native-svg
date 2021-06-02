@@ -320,7 +320,7 @@ export function parse(source: string, middleware?: Middleware): JsxAST | null {
     }
 
     if (/\S/.test(text)) {
-      children.push(text);
+      children && children.push(text);
     }
 
     if (source[i] === '<') {
@@ -366,7 +366,7 @@ export function parse(source: string, middleware?: Middleware): JsxAST | null {
     };
 
     if (currentElement) {
-      children.push(element);
+      children && children.push(element);
     } else {
       root = element;
     }
@@ -415,7 +415,7 @@ export function parse(source: string, middleware?: Middleware): JsxAST | null {
       error('expected ]]>');
     }
 
-    children.push(source.slice(i + 7, index));
+    children && children.push(source.slice(i + 7, index));
 
     i = index + 2;
     return neutral;
