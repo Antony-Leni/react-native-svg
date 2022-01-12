@@ -86,7 +86,10 @@ export type AdditionalProps = {
   override?: Object;
 };
 
-export type UriProps = { uri: string | null, headers: object } & AdditionalProps;
+export type UriProps = {
+  uri: string | null;
+  headers: object;
+} & AdditionalProps;
 export type UriState = { xml: string | null };
 
 export type XmlProps = { xml: string | null } & AdditionalProps;
@@ -122,8 +125,8 @@ export function SvgXml(props: XmlProps) {
   }
 }
 
-export async function fetchTextWithHeaders(uri: string, headers: any) {
-  const response = await fetch(uri, {headers});
+export async function fetchTextWithHeaders(uri: string, headers: {}) {
+  const response = await fetch(uri, { headers });
   return await response.text();
 }
 
@@ -144,8 +147,10 @@ export function SvgUri(props: UriProps) {
           })
           .catch(onError)
       : setXml(null);
-     return () => { isCancelled = true }
-  }, [onError, uri]);
+    return () => {
+      isCancelled = true;
+    };
+  }, [onError, uri, headers]);
   return <SvgXml xml={xml} override={props} />;
 }
 
